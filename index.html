@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: '맑은 고딕', sans-serif;
-      cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto; /* 고양이 발바닥 커서 */
+cursor: url('https://cdn.custom-cursor.com/db/9803/32/cat-paw-pointer.png'), auto; /* 고양이 발바닥 커서 */
       padding-bottom: 120px; /* 후원창 안 가리게 */
     }
 
@@ -119,14 +119,20 @@
   <div class="category-container" id="result"></div>
 
   <!-- 🎵 BGM 컨트롤러 -->
-  <div class="audio-controls">
-    <audio id="bgm" loop>
-      <source src="bgm/고양이춤Re.mp3" type="audio/mp3">
-      브라우저가 오디오를 지원하지 않습니다.
-    </audio>
-    <button onclick="document.getElementById('bgm').play()">재생</button>
-    <button onclick="document.getElementById('bgm').pause()">일시정지</button>
-    <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
+<div class="audio-controls">
+  <audio id="bgm" loop>
+    <source src="bgm/고양이춤Re.mp3" type="audio/mp3">
+    브라우저가 오디오를 지원하지 않습니다.
+  </audio>
+  <button onclick="document.getElementById('bgm').play()">재생</button>
+  <button onclick="document.getElementById('bgm').pause()">일시정지</button>
+  <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
+
+  <!-- 🎚️ 음량 조절 슬라이더다냥~ -->
+  <div style="margin-top:10px;">
+    <label for="volume">🔊 음량</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
+           onchange="document.getElementById('bgm').volume = this.value">
   </div>
 
   <!-- 💖 후원 박스 -->
