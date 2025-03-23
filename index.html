@@ -7,8 +7,9 @@
   <style>
     body {
       font-family: '맑은 고딕', sans-serif;
-cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* 고양이 발바닥 커서 */
-      padding-bottom: 120px; /* 후원창 안 가리게 */
+      cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;
+      padding-bottom: 120px;
+      overflow: hidden; /* 튕기는 이미지가 밖으로 못 나가게! */
     }
 
     h2 {
@@ -44,7 +45,6 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
       padding-left: 20px;
     }
 
-    /* 반응형 처리다냥~ */
     @media (max-width: 768px) {
       .category-box {
         width: 50%;
@@ -69,7 +69,6 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
       cursor: pointer;
     }
 
-    /* 후원 박스 스타일 */
     .support-box {
       position: fixed;
       bottom: 20px;
@@ -107,6 +106,15 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
       font-size: 13px;
       font-weight: bold;
     }
+
+    /* 🐾 튕기는 고양이 이미지 스타일 */
+    #cat {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      z-index: 999;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -118,29 +126,32 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
 
   <div class="category-container" id="result"></div>
 
-<!-- 🎵 BGM 컨트롤러 -->
-<div class="audio-controls">
-  <audio id="bgm" loop>
-    <source src="bgm.mp3" type="audio/mp3">
-    브라우저가 오디오를 지원하지 않습니다.
-  </audio>
-  <button onclick="document.getElementById('bgm').play()">재생</button>
-  <button onclick="document.getElementById('bgm').pause()">일시정지</button>
-  <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
-
-  <!-- 🎚️ 음량 조절 -->
-  <div style="margin-top:10px;">
-    <label for="volume">🔊 음량</label>
-    <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
-           onchange="document.getElementById('bgm').volume = this.value">
+  <!-- 🎵 BGM 컨트롤러 -->
+  <div class="audio-controls">
+    <audio id="bgm" loop>
+      <source src="bgm.mp3" type="audio/mp3">
+      브라우저가 오디오를 지원하지 않습니다.
+    </audio>
+    <button onclick="document.getElementById('bgm').play()">재생</button>
+    <button onclick="document.getElementById('bgm').pause()">일시정지</button>
+    <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
+    <div style="margin-top:10px;">
+      <label for="volume">🔊 음량</label>
+      <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
+             onchange="document.getElementById('bgm').volume = this.value">
+    </div>
   </div>
-</div>
 
-<div class="support-box">
-  <h4>💖 DIB를 응원하고 싶냥?</h4>
-  <p>📬 농협<br><strong>123456-78-91011</strong><br>(이승진)</p>
-  <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
-</div>
+  <!-- 💖 후원 박스 -->
+  <div class="support-box">
+    <h4>💖 DIB를 응원하고 싶냥?</h4>
+    <p>📬 농협<br><strong>123456-78-91011</strong><br>(이승진)</p>
+    <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
+  </div>
+
+  <!-- 🐱 고양이 이미지 -->
+  <img src="cat.png" id="cat" alt="고양이">
+
   <script>
     const data = {
 "음식":["김치찌개", "삼겹살", "어묵", "떡국", "된장찌개", "부대찌개", "순두부찌개", "감자탕", "삼계탕", "육개장", "갈비탕", "설렁탕", "떡볶이",
@@ -209,7 +220,7 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
  "아메리칸뷰티", "아메리칸사이코", "아바타", "아르고", "아마겟돈", "아저씨", "아쿠아맨", "아이캔스피크", "알라딘", "앤트맨", "애나벨", "야차",
  "어벤져스", "어스", "에이리언", "엑스맨", "엣지오브투모로우", "여고괴담", "연가시", "오펀", "올드보이", "올드가드", "월이", "월드워제트",
  "위플래쉬", "유전", "인사이드아웃", "인터스텔라", "뱀파이어와의인터뷰", "인셉션", "일본침몰", "자가당착", "장화홍련", "재심", "전설의고향",
- "전우치", "젠틀맨", "조커", "쥬라기공원", "주토피아", "죽은시인의사회", "지푸라기라도잡고싶은짐승들", "진범", "천공의성라퓨타",
+ "전우치", "젠틀맨", "조커", "쥐라기공원", "주토피아", "죽은시인의사회", "지푸라기라도잡고싶은짐승들", "진범", "천공의성라퓨타",
  "천사와악마", "청년경찰", "체르노빌", "초콜렛", "추격자", "칠번방의선물", "캡틴마블", "캡틴아메리카", "킹스맨", "타짜", "타워링",
  "타이타닉", "태극기휘날리며", "테넷", "트랜스포머", "트레인스포팅", "트루먼쇼", "파이트클럽", "퍼시픽림", "포레스트검프", "폭스캐처",
  "프레데터", "프레스티지", "프리즌", "하울의움직이는성", "할로윈", "해리포터", "헝거게임", "헌트", "혹성탈출", "혼숨", "화이트크리스마스"]
@@ -327,7 +338,7 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
  "아킬레스건"]
  ,
 "크래비":["크래비바보"]
-};
+ };
 
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 
@@ -337,11 +348,7 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
         'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ',
         'ㅄ': 'ㅂㅅ'
       };
-      let result = '';
-      for (let char of input) {
-        result += comboMap[char] || char;
-      }
-      return result;
+      return [...input].map(c => comboMap[c] || c).join('');
     }
 
     function getInitials(word) {
@@ -349,17 +356,14 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
       for (let char of word) {
         const code = char.charCodeAt(0) - 0xAC00;
         if (code >= 0 && code <= 11171) {
-          let cho = Math.floor(code / 588);
-          result += CHO[cho];
+          result += CHO[Math.floor(code / 588)];
         }
       }
       return result;
     }
 
     function handleKey(event) {
-      if (event.key === 'Enter') {
-        search();
-      }
+      if (event.key === 'Enter') search();
     }
 
     function search() {
@@ -373,23 +377,33 @@ cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;  /* �
         if (matched.length > 0) {
           const box = document.createElement('div');
           box.className = 'category-box';
-
-          const title = document.createElement('h3');
-          title.textContent = `[${category}]`;
-          box.appendChild(title);
-
-          const ul = document.createElement('ul');
-          matched.forEach(word => {
-            const li = document.createElement('li');
-            li.textContent = word;
-            ul.appendChild(li);
-          });
-
-          box.appendChild(ul);
+          box.innerHTML = `<h3>[${category}]</h3><ul>${matched.map(w => `<li>${w}</li>`).join('')}</ul>`;
           resultDiv.appendChild(box);
         }
       }
     }
+
+    // 🐱 고양이 이미지가 튕기며 돌아다니는 애니메이션
+    const cat = document.getElementById('cat');
+    let x = 100, y = 100;
+    let dx = 2, dy = 2;
+
+    function moveCat() {
+      const maxX = window.innerWidth - cat.clientWidth;
+      const maxY = window.innerHeight - cat.clientHeight;
+
+      x += dx;
+      y += dy;
+
+      if (x <= 0 || x >= maxX) dx *= -1;
+      if (y <= 0 || y >= maxY) dy *= -1;
+
+      cat.style.left = x + 'px';
+      cat.style.top = y + 'px';
+      requestAnimationFrame(moveCat);
+    }
+
+    moveCat();
   </script>
 </body>
 </html>
