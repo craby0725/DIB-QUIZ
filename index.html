@@ -1,69 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DIB 화이팅!!</title>
   <style>
     body {
       font-family: '맑은 고딕', sans-serif;
+      cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto; /* 고양이 발바닥 커서 */
+      padding-bottom: 120px; /* 후원창 안 가리게 */
     }
+
     h2 {
       font-weight: bold;
+      text-align: center;
     }
+
+    input, button {
+      font-size: 16px;
+      padding: 8px;
+      margin: 10px;
+    }
+
     .category-container {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       margin-top: 20px;
     }
+
     .category-box {
       width: 25%;
       box-sizing: border-box;
       padding: 10px;
       border: 1px solid #ddd;
     }
+
     .category-box h3 {
       margin-bottom: 5px;
     }
+
     ul {
       padding-left: 20px;
     }
+
+    /* 반응형 처리다냥~ */
+    @media (max-width: 768px) {
+      .category-box {
+        width: 50%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .category-box {
+        width: 100%;
+      }
+    }
+
+    .audio-controls {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .audio-controls button {
+      margin: 0 5px;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* 후원 박스 스타일 */
+    .support-box {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 180px;
+      padding: 12px;
+      border: 2px dashed #ff99cc;
+      border-radius: 10px;
+      background-color: #fff0f5;
+      text-align: center;
+      font-family: '나눔고딕', sans-serif;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .support-box h4 {
+      color: #ff3399;
+      margin: 0 0 10px 0;
+      font-size: 14px;
+    }
+
+    .support-box p {
+      font-size: 12px;
+      margin: 5px 0;
+    }
+
+    .support-box a {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 10px;
+      background-color: #ff66aa;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: bold;
+    }
   </style>
-  <!-- 💖 후원 박스 시작 -->
-<div style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 250px;
-  padding: 15px;
-  border: 2px dashed #ff99cc;
-  border-radius: 10px;
-  background-color: #fff0f5;
-  text-align: center;
-  font-family: '나눔고딕', sans-serif;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-">
-  <h4 style="color: #ff3399; margin: 0 0 10px 0;">💖 DIB를 응원하고 싶냥?</h4>
-  <p style="font-size: 14px; margin: 5px 0;">📬 농협<br><strong>123456-78-91011</strong><br>(홍길동)</p>
-  <a href="https://toss.me/너의아이디" target="_blank" style="
-    display: inline-block;
-    margin-top: 8px;
-    padding: 6px 12px;
-    background-color: #ff66aa;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-  ">토스로 후원하기</a>
-</div>
-  <!-- 💖 후원 박스 끝 -->
 </head>
 <body>
   <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
-  <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
-  <button onclick="search()">검색</button>
+  <div style="text-align:center;">
+    <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
+    <button onclick="search()">검색</button>
+  </div>
+
   <div class="category-container" id="result"></div>
+
+  <!-- 🎵 BGM 컨트롤러 -->
+  <div class="audio-controls">
+    <audio id="bgm" loop>
+      <source src="bgm/고양이춤Re.mp3" type="audio/mp3">
+      브라우저가 오디오를 지원하지 않습니다.
+    </audio>
+    <button onclick="document.getElementById('bgm').play()">재생</button>
+    <button onclick="document.getElementById('bgm').pause()">일시정지</button>
+    <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
+  </div>
+
+  <!-- 💖 후원 박스 -->
+  <div class="support-box">
+    <h4>💖 DIB를 응원하고 싶냥?</h4>
+    <p>📬 농협<br><strong>123456-78-91011</strong><br>(홍길동)</p>
+    <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
+  </div>
 
   <script>
     const data = {
@@ -132,7 +203,7 @@
  "센과치히로의행방불명", "셜록홈즈", "쇼생크탈출", "슈퍼맨", "스노우피어서", "스파이더맨", "스피드", "씬시티", "아가씨", "아마데우스",
  "아메리칸뷰티", "아메리칸사이코", "아바타", "아르고", "아마겟돈", "아저씨", "아쿠아맨", "아이캔스피크", "알라딘", "앤트맨", "애나벨", "야차",
  "어벤져스", "어스", "에이리언", "엑스맨", "엣지오브투모로우", "여고괴담", "연가시", "오펀", "올드보이", "올드가드", "월이", "월드워제트",
- "위플래쉬", "유전", "인사이드아웃", "인터스텔라", "인터뷰위드뱀파이어", "인셉션", "일본침몰", "자가당착", "장화홍련", "재심", "전설의고향",
+ "위플래쉬", "유전", "인사이드아웃", "인터스텔라", "뱀파이어와의인터뷰", "인셉션", "일본침몰", "자가당착", "장화홍련", "재심", "전설의고향",
  "전우치", "젠틀맨", "조커", "주라기공원", "주토피아", "죽은시인의사회", "지푸라기라도잡고싶은짐승들", "진범", "천공의성라퓨타",
  "천사와악마", "청년경찰", "체르노빌", "초콜렛", "추격자", "칠번방의선물", "캡틴마블", "캡틴아메리카", "킹스맨", "타짜", "타워링",
  "타이타닉", "태극기휘날리며", "테넷", "트랜스포머", "트레인스포팅", "트루먼쇼", "파이트클럽", "퍼시픽림", "포레스트검프", "폭스캐처",
@@ -251,7 +322,7 @@
  "아킬레스건"]
  ,
 "크래비":["크래비바보"]
- };
+};
 
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 
