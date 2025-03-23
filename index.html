@@ -227,9 +227,9 @@ function search() {
   resultDiv.innerHTML = '';
 
   for (const [category, words] of Object.entries(data)) {
-    const matched = words.filter(word => getInitials(word).startsWith(input));
+    const matched = words.filter(word => getInitials(word) === input);
 
-    // 결과가 하나라도 있을 때만 카테고리 제목과 리스트 출력!
+    // 🔥 결과가 있을 때만 카테고리 출력하도록 바꿔야 한다냥!
     if (matched.length > 0) {
       const catTitle = document.createElement('h3');
       catTitle.textContent = `[${category}]`;
