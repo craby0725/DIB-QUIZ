@@ -11,8 +11,19 @@
   <div id="result"></div>
 
   <script>
-    // 🔹 단어 데이터 (생략된 상태)
+    // 단어 데이터 (예시만 간략하게 포함)
     const data = {
+      "노래": ["불새", "흔들리는꽃들속에서네샴푸향이느껴진거야", "라일락"],
+      "생물": ["강아지", "고양이"],
+      "사자성어": ["고육지책", "각골난망"]
+    };
+
+    // 초성 테이블이냥~
+    const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+
+    // 입력값 겹받침 분해 처리다냥~
+    function normalizeInput(input) {
+      const comboMap = {
 "음식":["김치찌개", "삼겹살", "어묵", "떡국", "된장찌개", "부대찌개", "순두부찌개", "감자탕", "삼계탕", "육개장", "갈비탕", "설렁탕", "떡볶이",
  "순대", "오징어볶음", "제육볶음", "불고기", "돼지갈비", "소갈비", "치킨", "닭강정", "닭갈비", "닭도리탕", "해물찜", "간장게장", "양념게장",
  "게살볶음밥", "전복죽", "낙지볶음", "고등어조림", "갈치조림", "코다리찜", "장어구이", "쭈꾸미볶음", "홍어삼합", "곱창전골", "막창구이",
@@ -195,56 +206,70 @@
  "비골", "슬개골", "족근골", "수근골", "중족골", "중수골", "지골", "건", "인대", "근섬유", "근막", "평활근", "골격근", "심근", "전두근", "측두근",
  "교근", "승모근", "광배근", "대흉근", "삼각근", "이두근", "삼두근", "전완근", "복직근", "복사근", "대둔근", "대퇴사두근", "비복근",
  "아킬레스건"]
-   };
+ };
 
-    // 🔹 초성 추출 함수다냥~
+    // 초성 테이블이냥~
+    const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+
+    // 입력값 겹받침 분해 처리다냥~
+    function normalizeInput(input) {
+      const comboMap = {
+        'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ',
+        'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ',
+        'ㅄ': 'ㅂㅅ'
+      };
+      let result = '';
+      for (let char of input) {
+        result += comboMap[char] || char;
+      }
+      return result;
+    }
+
+    // 단어에서 초성만 뽑아내는 함수다냥!
     function getInitials(word) {
-      const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
       let result = '';
       for (let char of word) {
         const code = char.charCodeAt(0) - 0xAC00;
         if (code >= 0 && code <= 11171) {
           let cho = Math.floor(code / 588);
           result += CHO[cho];
-        } else {
-          result += char;
         }
       }
       return result;
     }
 
-    // 🔹 엔터 키로 검색되게 하는 함수다냥!
+    // 엔터 키 감지해서 검색 실행!
     function handleKey(event) {
       if (event.key === 'Enter') {
         search();
       }
     }
 
-    // 🔹 검색 함수다냥~
-function search() {
-  const input = document.getElementById('input').value.trim();
-  const resultDiv = document.getElementById('result');
-  resultDiv.innerHTML = '';
+    // 검색 함수다냥!
+    function search() {
+      const rawInput = document.getElementById('input').value.trim();
+      const input = normalizeInput(rawInput);
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '';
 
-  for (const [category, words] of Object.entries(data)) {
-    const matched = words.filter(word => getInitials(word) === input);
+      for (const [category, words] of Object.entries(data)) {
+        const matched = words.filter(word => getInitials(word).startsWith(input));
 
-    // 🔥 결과가 있을 때만 카테고리 출력하도록 바꿔야 한다냥!
-    if (matched.length > 0) {
-      const catTitle = document.createElement('h3');
-      catTitle.textContent = `[${category}]`;
-      resultDiv.appendChild(catTitle);
+        if (matched.length > 0) {
+          const catTitle = document.createElement('h3');
+          catTitle.textContent = `[${category}]`;
+          resultDiv.appendChild(catTitle);
 
-      const ul = document.createElement('ul');
-      matched.forEach(word => {
-        const li = document.createElement('li');
-        li.textContent = word;
-        ul.appendChild(li);
-      });
-      resultDiv.appendChild(ul);
+          const ul = document.createElement('ul');
+          matched.forEach(word => {
+            const li = document.createElement('li');
+            li.textContent = word;
+            ul.appendChild(li);
+          });
+          resultDiv.appendChild(ul);
+        }
+      }
     }
-  }
-}
   </script>
 </body>
 </html>
