@@ -221,16 +221,15 @@
     }
 
     // 🔹 검색 함수다냥~
-    function search() {
-      const input = document.getElementById('input').value.trim();
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = '';
+function search() {
+  const input = document.getElementById('input').value.trim();
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = '';
 
-      for (const [category, words] of Object.entries(data)) {
-        // 정확한 초성 시작 일치로 필터링
-        const matched = words.filter(word => getInitials(word).startsWith(input));
+  for (const [category, words] of Object.entries(data)) {
+    const matched = words.filter(word => getInitials(word).startsWith(input));
 
-  // 결과가 하나라도 있을 때만 출력한다냥!
+    // 결과가 하나라도 있을 때만 카테고리 제목과 리스트 출력!
     if (matched.length > 0) {
       const catTitle = document.createElement('h3');
       catTitle.textContent = `[${category}]`;
