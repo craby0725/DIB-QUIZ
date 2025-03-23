@@ -6,12 +6,12 @@
 </head>
 <body>
   <h2>자음퀴즈 답지 (카테고리별)</h2>
-  <input type="text" id="input" placeholder="예: ㄱㅇㅈ">
+  <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
   <button onclick="search()">검색</button>
   <div id="result"></div>
 
   <script>
-    // 카테고리별 단어 데이터다냥~
+    // 🔹 단어 데이터 (생략된 상태)
     const data = {
 "음식":["김치찌개", "삼겹살", "어묵", "떡국", "된장찌개", "부대찌개", "순두부찌개", "감자탕", "삼계탕", "육개장", "갈비탕", "설렁탕", "떡볶이",
  "순대", "오징어볶음", "제육볶음", "불고기", "돼지갈비", "소갈비", "치킨", "닭강정", "닭갈비", "닭도리탕", "해물찜", "간장게장", "양념게장",
@@ -195,9 +195,9 @@
  "비골", "슬개골", "족근골", "수근골", "중족골", "중수골", "지골", "건", "인대", "근섬유", "근막", "평활근", "골격근", "심근", "전두근", "측두근",
  "교근", "승모근", "광배근", "대흉근", "삼각근", "이두근", "삼두근", "전완근", "복직근", "복사근", "대둔근", "대퇴사두근", "비복근",
  "아킬레스건"]
-    };
+   };
 
-    // 초성 추출 함수다냥~
+    // 🔹 초성 추출 함수다냥~
     function getInitials(word) {
       const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
       let result = '';
@@ -213,14 +213,22 @@
       return result;
     }
 
-    // 검색 함수다냥~
+    // 🔹 엔터 키로 검색되게 하는 함수다냥!
+    function handleKey(event) {
+      if (event.key === 'Enter') {
+        search();
+      }
+    }
+
+    // 🔹 검색 함수다냥~
     function search() {
       const input = document.getElementById('input').value.trim();
       const resultDiv = document.getElementById('result');
       resultDiv.innerHTML = '';
 
       for (const [category, words] of Object.entries(data)) {
-	const matched = words.filter(word => getInitials(word).includes(input));
+        // 정확한 초성 시작 일치로 필터링
+        const matched = words.filter(word => getInitials(word).startsWith(input));
 
         const catTitle = document.createElement('h3');
         catTitle.textContent = `[${category}]`;
