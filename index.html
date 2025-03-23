@@ -118,7 +118,7 @@ cursor: url('https://cdn.custom-cursor.com/db/9803/32/cat-paw-pointer.png'), aut
 
   <div class="category-container" id="result"></div>
 
-  <!-- 🎵 BGM 컨트롤러 -->
+<!-- 🎵 BGM 컨트롤러 -->
 <div class="audio-controls">
   <audio id="bgm" loop>
     <source src="고양이춤Re.mp3" type="audio/mp3">
@@ -128,20 +128,19 @@ cursor: url('https://cdn.custom-cursor.com/db/9803/32/cat-paw-pointer.png'), aut
   <button onclick="document.getElementById('bgm').pause()">일시정지</button>
   <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
 
-  <!-- 🎚️ 음량 조절 슬라이더다냥~ -->
+  <!-- 🎚️ 음량 조절 -->
   <div style="margin-top:10px;">
     <label for="volume">🔊 음량</label>
     <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
            onchange="document.getElementById('bgm').volume = this.value">
   </div>
+</div>
 
-  <!-- 💖 후원 박스 -->
-  <div class="support-box">
-    <h4>💖 DIB를 응원하고 싶냥?</h4>
-    <p>📬 농협<br><strong>123456-78-91011</strong><br>(홍길동)</p>
-    <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
-  </div>
-
+<div class="support-box">
+  <h4>💖 DIB를 응원하고 싶냥?</h4>
+  <p>📬 농협<br><strong>123456-78-91011</strong><br>(홍길동)</p>
+  <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
+</div>
   <script>
     const data = {
 "음식":["김치찌개", "삼겹살", "어묵", "떡국", "된장찌개", "부대찌개", "순두부찌개", "감자탕", "삼계탕", "육개장", "갈비탕", "설렁탕", "떡볶이",
