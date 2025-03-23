@@ -3,20 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <title>DIB 화이팅!!</title>
+  <style>
+    body {
+      font-family: '맑은 고딕', sans-serif;
+    }
+    h2 {
+      font-weight: bold;
+    }
+    .category-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .category-box {
+      width: 25%;
+      box-sizing: border-box;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    .category-box h3 {
+      margin-bottom: 5px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
 </head>
 <body>
   <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
   <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
   <button onclick="search()">검색</button>
-  <div id="result"></div>
-
-  <!-- 후원 박스 시작 -->
-  <div style="margin-top: 40px; padding: 20px; border: 2px dashed #ff99cc; border-radius: 10px; background-color: #fff0f5; text-align: center; font-family: '나눔고딕', sans-serif;">
-    <h3 style="color: #ff3399;">😺 대잇방을 응원하고 싶다면? 😺</h3>
-    <p style="font-size: 16px; margin: 10px 0;">📬 농협 <strong>123456-78-91011</strong> (이승진)</p>
-    <a href="https://toss.me/너의아이디" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #ff66aa; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">토스로 후원하기</a>
-  </div>
-  <!-- 후원 박스 끝 -->
+  <div class="category-container" id="result"></div>
 
   <script>
     const data = {
@@ -71,7 +88,7 @@
  "인과응보", "일석이조", "임기응변", "자가당착", "자업자득", "작심삼일", "전전긍긍", "전화위복", "정정당당", "좌지우지", "주객전도",
  "중구난방", "진퇴양난", "천고마비", "천재일우", "청출어람", "침소봉대", "타산지석", "태평성대", "파죽지세", "풍비박산", "한우충동",
  "함흥차사", "형설지공", "호시탐탐", "호연지기", "화룡점정", "회자정리", "후회막급", "감탄고토", "견물생심", "계란유골", "고립무원",
- "고육지책", "과전불납리", "관포지교", "구사일생", "금상첨화", "노심초사", "다사다난", "대기만성", "독불장군", "등용문", "마이동풍",
+ "고육지책", "과전불납리", "관포지교", "구사일생", "노심초사", "다사다난", "대기만성", "독불장군", "등용문", "마이동풍",
  "명실상부", "백발백중", "사필귀정", "선견지명", "속전속결", "아비규환", "양자택일", "역지사지", "용두사미", "우유부단", "유구무언",
  "유비무환", "이실직고", "인과응보", "인생무상", "자승자박", "전광석화", "전무후무", "점입가경", "주경야독", "진수성찬", "진퇴양난",
  "청천벽력", "칠전팔기", "쾌도난마", "탁상공론", "허심탄회"]
@@ -207,14 +224,13 @@
  };
 
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
-    const comboMap = {
-      'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ',
-      'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ',
-      'ㅄ': 'ㅂㅅ'
-    };
 
-    // 입력값 겹받침 분해다냥~
     function normalizeInput(input) {
+      const comboMap = {
+        'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ',
+        'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ',
+        'ㅄ': 'ㅂㅅ'
+      };
       let result = '';
       for (let char of input) {
         result += comboMap[char] || char;
@@ -222,27 +238,24 @@
       return result;
     }
 
-    // 단어에서 초성만 뽑고 겹받침도 처리한다냥~
     function getInitials(word) {
       let result = '';
       for (let char of word) {
         const code = char.charCodeAt(0) - 0xAC00;
         if (code >= 0 && code <= 11171) {
-          const choIndex = Math.floor(code / 588);
-          result += CHO[choIndex];
+          let cho = Math.floor(code / 588);
+          result += CHO[cho];
         }
       }
-      return normalizeInput(result);
+      return result;
     }
 
-    // 엔터 키 눌렀을 때 검색 실행한다냥~
     function handleKey(event) {
       if (event.key === 'Enter') {
         search();
       }
     }
 
-    // 검색 기능 구현이냥!
     function search() {
       const rawInput = document.getElementById('input').value.trim();
       const input = normalizeInput(rawInput);
@@ -251,11 +264,13 @@
 
       for (const [category, words] of Object.entries(data)) {
         const matched = words.filter(word => getInitials(word).startsWith(input));
-
         if (matched.length > 0) {
-          const catTitle = document.createElement('h3');
-          catTitle.textContent = `[${category}]`;
-          resultDiv.appendChild(catTitle);
+          const box = document.createElement('div');
+          box.className = 'category-box';
+
+          const title = document.createElement('h3');
+          title.textContent = `[${category}]`;
+          box.appendChild(title);
 
           const ul = document.createElement('ul');
           matched.forEach(word => {
@@ -263,7 +278,9 @@
             li.textContent = word;
             ul.appendChild(li);
           });
-          resultDiv.appendChild(ul);
+
+          box.appendChild(ul);
+          resultDiv.appendChild(box);
         }
       }
     }
