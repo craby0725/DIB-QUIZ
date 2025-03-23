@@ -114,7 +114,12 @@
       height: 50px;
       z-index: 999;
       pointer-events: none;
+  animation: spin 2s linear infinite; /* 5초에 한 바퀴 회전 */
     }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
   </style>
 </head>
 <body>
