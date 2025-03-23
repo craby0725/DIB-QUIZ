@@ -230,25 +230,22 @@
         // 정확한 초성 시작 일치로 필터링
         const matched = words.filter(word => getInitials(word).startsWith(input));
 
-        const catTitle = document.createElement('h3');
-        catTitle.textContent = `[${category}]`;
-        resultDiv.appendChild(catTitle);
+  // 결과가 하나라도 있을 때만 출력한다냥!
+    if (matched.length > 0) {
+      const catTitle = document.createElement('h3');
+      catTitle.textContent = `[${category}]`;
+      resultDiv.appendChild(catTitle);
 
-        if (matched.length === 0) {
-          const none = document.createElement('p');
-          none.textContent = '결과 없음';
-          resultDiv.appendChild(none);
-        } else {
-          const ul = document.createElement('ul');
-          matched.forEach(word => {
-            const li = document.createElement('li');
-            li.textContent = word;
-            ul.appendChild(li);
-          });
-          resultDiv.appendChild(ul);
-        }
-      }
+      const ul = document.createElement('ul');
+      matched.forEach(word => {
+        const li = document.createElement('li');
+        li.textContent = word;
+        ul.appendChild(li);
+      });
+      resultDiv.appendChild(ul);
     }
+  }
+}
   </script>
 </body>
 </html>
