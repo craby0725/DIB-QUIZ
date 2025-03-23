@@ -220,7 +220,7 @@
       resultDiv.innerHTML = '';
 
       for (const [category, words] of Object.entries(data)) {
-        const matched = words.filter(word => getInitials(word) === input);
+	const matched = words.filter(word => getInitials(word).includes(input));
 
         const catTitle = document.createElement('h3');
         catTitle.textContent = `[${category}]`;
