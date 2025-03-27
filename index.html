@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DIB 화이팅!!</title>
   <style>
     body {
-  overflow-x: hidden;  /* 가로 스크롤만 막고 */
-  overflow-y: auto;    /* 세로는 자동 스크롤 허용 */
-  margin: 0;
-  padding-bottom: 120px;
-  font-family: '맑은 고딕', sans-serif;
-  cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;
+      margin: 0;
+      font-family: '맑은 고딕', sans-serif;
+      cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;
+      padding-bottom: 120px;
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      background: url('sam.png') no-repeat center center;
+      background-size: contain; /* 비율 유지하며 잘림 없이 */
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: rgba(255, 255, 255, 0.9); /* 약간의 밝은 반투명 효과 */
     }
-  background-image: url('sam.png'); /* 또는 png, webp 등 */
-  background-size: cover;         /* 화면에 꽉 차게 */
-  background-position: center;    /* 중앙 정렬 */
-  background-repeat: no-repeat;   /* 반복 금지 */
+
     h2 {
       font-weight: bold;
       text-align: center;
@@ -40,6 +44,7 @@
       box-sizing: border-box;
       padding: 10px;
       border: 1px solid #ddd;
+      background-color: white;
     }
 
     .category-box h3 {
@@ -112,39 +117,40 @@
       font-weight: bold;
     }
 
-    /* 🐾 튕기는 고양이 이미지 스타일 */
     #cat {
       position: fixed;
       width: 50px;
       height: 50px;
       z-index: 999;
       pointer-events: none;
-  animation: spin 2s linear infinite; /* 5초에 한 바퀴 회전 */
+      animation: spin 2s linear infinite;
     }
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
+
   <div style="text-align:center;">
-    <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
+    <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)" />
     <button onclick="search()">검색</button>
   </div>
 
   <div class="category-container" id="result"></div>
 
-  <!-- 🎵 BGM 컨트롤러 -->
   <div class="audio-controls">
     <audio id="bgm" loop>
-      <source src="bgm.mp3" type="audio/mp3">
+      <source src="bgm.mp3" type="audio/mp3" />
       브라우저가 오디오를 지원하지 않습니다.
     </audio>
     <button onclick="document.getElementById('bgm').play()">재생</button>
     <button onclick="document.getElementById('bgm').pause()">일시정지</button>
     <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
+
     <div style="margin-top:10px;">
       <label for="volume">🔊 음량</label>
       <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
@@ -152,15 +158,13 @@
     </div>
   </div>
 
-  <!-- 💖 후원 박스 -->
   <div class="support-box">
     <h4>💖 DIB를 응원하고 싶냥?</h4>
     <p>📬 농협<br><strong>123456-78-91011</strong><br>(이승진)</p>
     <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
   </div>
 
-  <!-- 🐱 고양이 이미지 -->
-  <img src="cat.png" id="cat" alt="고양이">
+  <img src="cat.png" id="cat" alt="고양이" />
 
   <script>
     const data = {
@@ -396,26 +400,20 @@
       }
     }
 
-    // 🐱 고양이 이미지가 튕기며 돌아다니는 애니메이션
+    // 🐱 고양이 움직이기
     const cat = document.getElementById('cat');
-    let x = 100, y = 100;
-    let dx = 2, dy = 2;
+    let x = 100, y = 100, dx = 2, dy = 2;
 
     function moveCat() {
       const maxX = window.innerWidth - cat.clientWidth;
       const maxY = window.innerHeight - cat.clientHeight;
-
-      x += dx;
-      y += dy;
-
+      x += dx; y += dy;
       if (x <= 0 || x >= maxX) dx *= -1;
       if (y <= 0 || y >= maxY) dy *= -1;
-
       cat.style.left = x + 'px';
       cat.style.top = y + 'px';
       requestAnimationFrame(moveCat);
     }
-
     moveCat();
   </script>
 </body>
