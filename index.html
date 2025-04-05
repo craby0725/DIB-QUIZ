@@ -12,13 +12,10 @@
       padding-bottom: 120px;
       overflow-x: hidden;
       overflow-y: auto;
-
       background: url('sansam.png') no-repeat center center;
-      background-size: contain; /* 비율 유지하며 잘림 없이 */
+      background-size: contain;
       background-attachment: fixed;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-color: rgba(255, 255, 255, 0.9); /* 약간의 밝은 반투명 효과 */
+      background-color: rgba(255, 255, 255, 0.9);
     }
 
     h2 {
@@ -130,9 +127,42 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+
+    /* 로그인 박스 */
+    .login-box {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .user-info {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
+  <!-- 로그인 박스 -->
+  <div class="login-box" id="loginBox">
+    <h2>로그인 하라냥~!</h2>
+    <input type="text" id="username" placeholder="아이디" onkeydown="if(event.key==='Enter') login()"/>
+    <input type="password" id="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter') login()"/>
+    <button onclick="login()">로그인</button>
+  </div>
+
+  <!-- 유저 정보 박스 -->
+  <div class="user-info" id="userInfo" style="display:none;">
+    <div>닉네임: <span id="displayName"></span></div>
+    <div>계급: <span id="displayGrade"></span></div>
+    <button onclick="logout()">로그아웃</button>
+  </div>
+
   <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
 
   <div style="text-align:center;">
@@ -150,7 +180,6 @@
     <button onclick="document.getElementById('bgm').play()">재생</button>
     <button onclick="document.getElementById('bgm').pause()">일시정지</button>
     <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
-
     <div style="margin-top:10px;">
       <label for="volume">🔊 음량</label>
       <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
@@ -167,6 +196,66 @@
   <img src="cat.png" id="cat" alt="고양이" />
 
   <script>
+    const users = {
+      'VIP': ['엄마99', '고스트에이전시', '동글동글', '산삼', '얼벌키', '음', '정은', '콩콩', '쿠키and크림', '핫초', '홈즈'],
+      'GOLD': [],
+      'SILVER': [],
+      'BRONZE': [],
+      'IRON': []
+    };
+
+    const passwords = {
+      '엄마99': '1234',
+      '고스트에이전시': '1234',
+      '동글동글': '1234',
+      '산삼': '1234',
+      '얼벌키': '1234',
+      '음': '1234',
+      '정은': '1234',
+      '콩콩': '1234',
+      '쿠키and크림': '1234',
+      '핫초': '1234',
+      '홈즈': '1234'
+    };
+
+    const welcomeMessage = {
+      'VIP': user => `우리 귀한 VIP ${user}님!! 어서오라냥!!`,
+      'GOLD': user => `GOLD ${user}님!! 오셨냥?? 재밌게 즐기다가라냥!!`,
+      'SILVER': user => `SILVER ${user}! 놀다가라냥~!`,
+      'BRONZE': user => `에.. BRONZE ${user} 왔냥~ 더 열심히 하라냥~`,
+      'IRON': user => `하~암! 그래그래~ 열심히 해보라냥~`,
+      'GUEST': () => '어서오라냥~!'
+    };
+
+    let currentUser = null;
+    let currentGrade = 'GUEST';
+
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (passwords[username] && passwords[username] === password) {
+        for (let grade in users) {
+          if (users[grade].includes(username)) {
+            currentUser = username;
+            currentGrade = grade;
+            break;
+          }
+        }
+        alert(welcomeMessage[currentGrade](currentUser));
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('displayName').textContent = currentUser;
+        document.getElementById('displayGrade').textContent = currentGrade;
+      } else {
+        alert('아이디 또는 비밀번호가 틀렸다냥!');
+      }
+    }
+
+    function logout() {
+      location.reload();
+    }
+
     const data = {
       "생물":["가재", "가지", "감나무", "감자", "갓", "강아지", "개구리", "개나리", "개미", "거미", "거북이", "거위", "게", "고구마",
  "고등어", "고래", "고릴라", "고무나무", "고슴도치", "고양이", "고추", "공작", "광어", "국화", "귤나무", "기린", "까마귀", "꿀벌",
@@ -383,7 +472,7 @@
  "화장품", "황동", "황수정", "효자손", "휠체어", "휴지", "휴지통", "흑요석", "히터"]
 ,
 "크래비":["크래비바보"]
-    };
+   };
 
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 
@@ -428,14 +517,14 @@
       }
     }
 
-    // 🐱 고양이 움직이기
     const cat = document.getElementById('cat');
     let x = 100, y = 100, dx = 2, dy = 2;
 
     function moveCat() {
       const maxX = window.innerWidth - cat.clientWidth;
       const maxY = window.innerHeight - cat.clientHeight;
-      x += dx; y += dy;
+      x += dx;
+      y += dy;
       if (x <= 0 || x >= maxX) dx *= -1;
       if (y <= 0 || y >= maxY) dy *= -1;
       cat.style.left = x + 'px';
