@@ -476,7 +476,7 @@
  "화장품", "황동", "황수정", "효자손", "휠체어", "휴지", "휴지통", "흑요석", "히터"]
 ,
 "크래비":["크래비바보"]
-   };
+      };
 
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 
@@ -504,23 +504,36 @@
       if (event.key === 'Enter') search();
     }
 
-    function search() {
-      const rawInput = document.getElementById('input').value.trim();
-      const input = normalizeInput(rawInput);
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = '';
+function search() {
+  const rawInput = document.getElementById('input').value.trim();
+  const input = normalizeInput(rawInput);
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = '';
 
-      for (const [category, words] of Object.entries(data)) {
-        const matched = words.filter(word => getInitials(word).startsWith(input));
-        if (matched.length > 0) {
-          const box = document.createElement('div');
-          box.className = 'category-box';
-          box.innerHTML = `<h3>[${category}]</h3><ul>${matched.map(w => `<li>${w}</li>`).join('')}</ul>`;
-          resultDiv.appendChild(box);
-        }
-      }
+  // 계급별 주제 설정
+  const categoryByGrade = {
+    'VIP': Object.keys(data),
+    'GOLD': ["음식", "한자성어", "영화", "병/질환", "상상속의존재", "드라마", "노래", "신체", "사물", "크래비"],
+    'SILVER': ["음식", "한자성어", "영화", "병/질환", "드라마", "노래", "신체", "사물", "크래비"],
+    'BRONZE': ["음식", "한자성어", "영화", "드라마", "노래", "신체", "사물", "크래비"],
+    'IRON': ["음식", "한자성어", "영화", "드라마", "노래", "사물", "크래비"],
+    'GUEST': ["음식", "한자성어", "영화", "드라마", "노래"]
+  };
+
+  // 로그인하지 않은 경우 GUEST 처리
+  const categories = categoryByGrade[currentGrade || 'GUEST'];
+
+  categories.forEach(category => {
+    const words = data[category] || [];
+    const matched = words.filter(word => getInitials(word).startsWith(input));
+    if (matched.length > 0) {
+      const box = document.createElement('div');
+      box.className = 'category-box';
+      box.innerHTML = `<h3>[${category}]</h3><ul>${matched.map(w => `<li>${w}</li>`).join('')}</ul>`;
+      resultDiv.appendChild(box);
     }
-
+  });
+}
     const cat = document.getElementById('cat');
     let x = 100, y = 100, dx = 2, dy = 2;
 
