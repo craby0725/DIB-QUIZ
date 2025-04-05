@@ -1,352 +1,272 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DIB 화이팅!!</title>
-  <style>
-    body {
-      font-family: '맑은 고딕', sans-serif;
-      cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;
-      padding-bottom: 120px;
-      margin: 0;
-      background: #fff;
-      overflow: hidden;
-    }
-
-    h2 {
-      font-weight: bold;
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    input, button {
-      font-size: 16px;
-      padding: 8px;
-      margin: 5px;
-    }
-
-    .category-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .category-box {
-      width: 25%;
-      box-sizing: border-box;
-      padding: 10px;
-      border: 1px solid #ddd;
-    }
-
-    .category-box h3 {
-      margin-bottom: 5px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .category-box {
-        width: 50%;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .category-box {
-        width: 100%;
-      }
-    }
-
-    .audio-controls {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .audio-controls button {
-      margin: 0 5px;
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .support-box {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 180px;
-      padding: 12px;
-      border: 2px dashed #ff99cc;
-      border-radius: 10px;
-      background-color: #fff0f5;
-      text-align: center;
-      font-family: '나눔고딕', sans-serif;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-
-    .support-box h4 {
-      color: #ff3399;
-      margin: 0 0 10px 0;
-      font-size: 14px;
-    }
-
-    .support-box p {
-      font-size: 12px;
-      margin: 5px 0;
-    }
-
-    .support-box a {
-      display: inline-block;
-      margin-top: 6px;
-      padding: 6px 10px;
-      background-color: #ff66aa;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    /* 🐾 튕기는 고양이 스타일 */
-    #cat {
-      position: fixed;
-      width: 50px;
-      height: 50px;
-      z-index: 999;
-      pointer-events: none;
-      animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    /* 로그인 박스 */
-    .login-box {
-      text-align: center;
-      margin-top: 50px;
-    }
-
-    .user-info {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-      z-index: 1000;
-    }
-  </style>
-</head>
-<body>
-  <!-- 로그인 박스 -->
-  <div class="login-box" id="loginBox">
-    <h2>로그인 하라냥~!</h2>
-    <input type="text" id="username" placeholder="아이디" onkeydown="if(event.key==='Enter') login()"/>
-    <input type="password" id="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter') login()"/>
-    <button onclick="login()">로그인</button>
-  </div>
-
-  <!-- 로그인 후 유저 정보 -->
-  <div class="user-info" id="userInfo" style="display:none;">
-    <div>닉네임: <span id="displayName"></span></div>
-    <div>계급: <span id="displayGrade"></span></div>
-    <button onclick="logout()">로그아웃</button>
-  </div>
-
-  <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
-
-  <div style="text-align:center;">
-    <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
-    <button onclick="search()">검색</button>
-  </div>
-
-  <div class="category-container" id="result"></div>
-
-  <!-- 🎵 BGM 컨트롤러 -->
-  <div class="audio-controls">
-    <audio id="bgm" loop>
-      <source src="bgm.mp3" type="audio/mp3">
-    </audio>
-    <button onclick="document.getElementById('bgm').play()">재생</button>
-    <button onclick="document.getElementById('bgm').pause()">일시정지</button>
-    <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
-    <div style="margin-top:10px;">
-      <label for="volume">🔊 음량</label>
-      <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
-             onchange="document.getElementById('bgm').volume = this.value">
-    </div>
-  </div>
-
-  <!-- 💖 후원 박스 -->
-  <div class="support-box">
-    <h4>💖 DIB를 응원하고 싶냥?</h4>
-    <p>📬 농협<br><strong>123456-78-91011</strong><br>(이승진)</p>
-    <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
-  </div>
-
-  <!-- 🐱 고양이 이미지 -->
-  <img src="cat.png" id="cat" alt="고양이" />
-<script>
-  // 🐱 사용자 계정 정보
-  const users = {
-    'VIP': ['엄마99', '고스트에이전시', '동글동글', '얼벌키', '음', '정은', '콩콩', '쿠키and크림', '핫초', '홈즈'],
-    'GOLD': ['산삼'],
-    'SILVER': ['짐볼'],
-    'BRONZE': ['건포도'],
-    'IRON': ['퀴즈못해']
+ <html lang="ko">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>DIB 화이팅!!</title>
+   <style>
+     body {
+       margin: 0;
+       font-family: '맑은 고딕', sans-serif;
+       cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;
+       padding-bottom: 120px;
+       margin: 0;
+       background: url('배경이미지.png') no-repeat center center;
+       background-size: cover;
+       overflow-x: hidden;
+       overflow-y: auto;
+ 
+       background: url('sam.png') no-repeat center center;
+       background-size: contain; /* 비율 유지하며 잘림 없이 */
+       background-attachment: fixed;
+       background-repeat: no-repeat;
+       background-position: center;
+       background-color: rgba(255, 255, 255, 0.9); /* 약간의 밝은 반투명 효과 */
+     }
+ 
+     h2 {
+       font-weight: bold;
+       text-align: center;
+       position: relative;
+       z-index: 1;
+     }
+ 
+     input, button {
+ @@ -37,14 +33,16 @@
+       flex-wrap: wrap;
+       justify-content: center;
+       margin-top: 20px;
+       position: relative;
+       z-index: 1;
+     }
+ 
+     .category-box {
+       width: 25%;
+       box-sizing: border-box;
+       padding: 10px;
+       border: 1px solid #ddd;
+       background-color: white;
+       background-color: rgba(255, 255, 255, 0.8);
+     }
+ 
+     .category-box h3 {
+ @@ -70,6 +68,8 @@
+     .audio-controls {
+       text-align: center;
+       margin-top: 30px;
+       position: relative;
+       z-index: 1;
+     }
+ 
+     .audio-controls button {
+ @@ -136,21 +136,28 @@
+   <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
+ 
+   <div style="text-align:center;">
+     <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)" />
+     <input type="text" id="username" placeholder="아이디">
+     <input type="password" id="password" placeholder="비밀번호">
+     <button onclick="login()">로그인</button>
+     <button onclick="logout()">로그아웃</button>
+   </div>
+ 
+   <div style="text-align:center;">
+     <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
+     <button onclick="search()">검색</button>
+   </div>
+ 
+   <div class="category-container" id="result"></div>
+ 
+   <!-- 🎵 BGM 컨트롤러 -->
+   <div class="audio-controls">
+     <audio id="bgm" loop>
+       <source src="bgm.mp3" type="audio/mp3" />
+       <source src="bgm.mp3" type="audio/mp3">
+       브라우저가 오디오를 지원하지 않습니다.
+     </audio>
+     <button onclick="document.getElementById('bgm').play()">재생</button>
+     <button onclick="document.getElementById('bgm').pause()">일시정지</button>
+     <button onclick="document.getElementById('bgm').currentTime=0; document.getElementById('bgm').pause()">정지</button>
+ 
+     <div style="margin-top:10px;">
+       <label for="volume">🔊 음량</label>
+       <input type="range" id="volume" min="0" max="1" step="0.01" value="1"
+ @@ -164,9 +171,38 @@ <h4>💖 DIB를 응원하고 싶냥?</h4>
+     <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
+   </div>
+ 
+   <img src="cat.png" id="cat" alt="고양이" />
+   <img src="cat.png" id="cat" alt="고양이">
+ 
+   <script>
+     // 사용자 데이터 (아이디:비밀번호)
+     const users = {
+       '엄마99': 'pass1',
+       '얼벌키': 'pass2',
+       'ㄱㄱㄱ': 'pass3',
+       '산삼': 'pass4',
+       '짐볼': 'pass5',
+       '건포도': 'pass6',
+       '퀴즈못해': 'pass7'
+     };
+ 
+     // 계급별 사용자
+     const roles = {
+       VIP: ['엄마99', '얼벌키', 'ㄱㄱㄱ'],
+       GOLD: ['산삼'],
+       SILVER: ['짐볼'],
+       BRONZE: ['건포도'],
+       IRON: ['퀴즈못해']
+     };
+ 
+     const roleTopics = {
+       VIP: 'all',
+       GOLD: ['음식', '한자성어', '영화', '병/질환', '상상속의존재', '드라마', '노래', '신체', '사물', '크래비'],
+       SILVER: ['음식', '한자성어', '영화', '병/질환', '드라마', '노래', '신체', '사물', '크래비'],
+       BRONZE: ['음식', '한자성어', '영화', '드라마', '노래', '신체', '사물', '크래비'],
+       IRON: ['음식', '한자성어', '영화', '드라마', '노래', '사물', '크래비'],
+       GUEST: ['음식', '한자성어', '영화', '드라마', '노래']
+     };
+ 
+     const data = {
+ "생물":["가재", "가지", "감나무", "감자", "갓", "강아지", "개구리", "개나리", "개미", "거미", "거북이", "거위", "게", "고구마",
+  "고등어", "고래", "고릴라", "고무나무", "고슴도치", "고양이", "고추", "공작", "광어", "국화", "귤나무", "기린", "까마귀", "꿀벌",
+ @@ -354,17 +390,41 @@ <h4>💖 DIB를 응원하고 싶냥?</h4>
+  "췌장", "측두근", "치아", "침샘", "타액선", "평활근", "폐", "폐동맥", "폐정맥", "항문", "혀", "혈소판", "혈장", "홍채", "횡격막", "후두", "후두개",
+  "흉골", "흉선", "흉추"]
+ ,
+ "사물":["가넷", "가름끈", "가방", "가습기", "가야금", "가위", "갈퀴", "감람석", "거문고", "거울", "거울", "건전지", "건조기", "걸레",
+  "계단", "계산기", "고글", "고데기", "고무장갑", "고무줄", "곡괭이", "곤포사일리지", "공작석", "괭이", "교과서", "교탁", "구급상자",
+  "구리", "근청석", "글로켄슈필", "기타", "김치냉장고", "깁스", "꽹과리", "나사", "나침반", "낚싯대", "낚싯바늘", "납", "냄비", "냉장고",
+  "노트북", "니켈", "다리미", "다리미판", "다이아몬드", "다이어리", "단열재", "단추", "달력", "담요", "대금", "더블베이스", "도마", "도어락",
+  "도장", "돌", "동전", "드라이기", "드라이버", "드럼", "드릴", "디브이디", "디퓨저", "뚝배기", "라디오", "라바콘", "라이터", "러그", "렌즈",
+  "렌치", "루비", "리모컨", "린스", "립밤", "립스틱", "마네킹", "마노", "마림바", "마스카라", "마스크", "마우스", "마우스패드", "마이크",
+  "만돌린", "망원경", "망치", "매직", "매트리스", "맷돌", "머리끈", "머리핀", "멀티탭", "면도기", "명찰", "명함", "모니터", "모래", "모자",
+  "목발", "못", "무드등", "문", "물병", "물티슈", "믹서기", "바늘", "바늘꽂이", "바디로션", "바디워시", "바란", "바순", "바이올린", "바인더",
+  "반창고", "밥솥", "밧줄", "방석", "배터리", "백팩", "뱃지", "버블랩", "베개", "벨트", "벽돌", "벽지", "변화석", "보드마카", "보청기", "본체",
+  "볼펜", "봉투", "부츠", "북", "분무기", "분필", "붓", "브레드클립", "브론즈", "블라인드", "비누", "비료", "비브라폰", "비올라", "비취", "비커",
+  "빗", "빗자루", "빨래바구니", "빨래집게", "사다리", "사문석", "사원증", "사육장", "사전", "사진", "사파이어", "사포", "산투르", "삼각대",
+  "삽", "색소폰", "샤프", "샴푸", "서랍장", "서류철", "석영", "선반", "선크림", "선풍기", "성냥", "세탁기", "셀카봉", "소금", "손난로", "손전등",
+  "손톱깎이", "쇼파", "수건", "수분크림", "수영복", "수첩", "숟가락", "스마트폰", "스케치북", "스타핑", "스탠드", "스테이플러", "스테인리스",
+  "스패너", "스포이드", "스피커", "슬리퍼", "시계", "시멘트", "시침핀", "식탁", "신디사이저", "신발", "신분증", "실", "실리콘", "심벌즈",
+  "십스틱", "쌍안경", "쓰레기봉투", "쓰레받이", "씨디", "씨씨티비", "아연", "안경", "안경닦이", "안대", "안약", "안전모", "안전화", "알루미늄",
+  "압정", "압핀", "액자", "앰프", "양말", "양초", "에글릿", "에메랄드", "에어컨", "연고", "연옥", "연필", "열쇠", "열쇠고리", "오르간", "오보에",
+  "오타마톤", "오팔", "옷걸이", "옷장", "외장하드", "용접기", "우비", "우산", "운동화", "월장석", "유에스비", "의자", "이불", "이어폰", "인형",
+  "인회석", "일장석", "자", "자갈", "자석", "자수정", "자철석", "잡지", "장갑", "장구", "재봉틀", "쟁반", "전광판", "전구", "전기석", "전등", "전선",
+  "전자레인지", "전화기", "접시", "접착제", "젓가락", "정수기", "조약돌", "조이스틱", "종", "종이", "주사기", "주석", "줄눈", "줄자", "지갑",
+  "지도", "지르콘", "지문인식기", "지우개", "지퍼", "집게", "징", "찜기", "참고서", "창문", "책", "책상", "챔발로", "철광석", "첨정석", "청금석",
+  "청석", "청소기", "체온계", "체온계", "체중계", "첼로", "충전기", "치약", "칠판", "침대", "칫솔", "카드", "카메라", "카펫", "칼", "칼림바",
+  "캠코더", "캣츠아이", "커터칼", "커튼", "커피포트", "컵", "컵받침", "콘센트", "콘크리트", "쿠션", "크롬", "클라리넷", "클렌징폼", "클립",
+  "키보드", "타일", "탄소", "태평소", "탬버린", "터키석", "텀블러", "테레민", "테이프", "텔레비젼", "토스터기", "토치", "토파즈", "톱", "퇴비",
+  "튜바", "트라이앵글", "트럼펫", "트롬본", "트위스트타이", "파우치", "파운데이션", "파일", "팩스", "페룰", "펜치", "포스트잇", "포크", "풀",
+  "풀룹스", "프라이팬", "프린터", "플라스크", "플라스틱", "플루트", "피아노", "피자세이버", "피콜로", "핀셋", "필통", "하모늄", "하프",
+  "학생증", "합금", "해금", "핸드크림", "행주", "향수", "헤드폰", "현미경", "혈압계", "형광등", "호른", "호미", "호안석", "화분", "화이트보드",
+  "화장품", "황동", "황수정", "효자손", "휠체어", "휴지", "휴지통", "흑요석", "히터"]
+ ,
+ "크래비":["크래비바보"]
   };
-
-  const passwords = {
-    '엄마99': '!!vpdlvj11',
-    '고스트에이전시': 'djfzl43',
-    '동글동글': '1234',
-    '산삼': '1234',
-    '얼벌키': '1234',
-    '음': '1234',
-    '정은': '1234',
-    '콩콩': '1234',
-    '쿠키and크림': '1234',
-    '핫초': '1234',
-    '홈즈': '1234',
-    '짐볼': '1234',
-    '건포도': '1234',
-    '퀴즈못해': '1234'
-  };
-
-  // 🐱 계급별 주제
-  const categoryData = {
-    "생물": [...],
-    "음식": [...],
-    "한자성어": [...],
-    "영화": [...],
-    "병/질환": [...],
-    "상상속의존재": [...],
-    "드라마": [...],
-    "노래": [...],
-    "신체": [...],
-    "사물": [...],
-    "크래비": ["크래비바보"]
-  };
-
-  const categoryPerGrade = {
-    'VIP': Object.keys(categoryData),
-    'GOLD': ["음식", "한자성어", "영화", "병/질환", "상상속의존재", "드라마", "노래", "신체", "사물", "크래비"],
-    'SILVER': ["음식", "한자성어", "영화", "병/질환", "드라마", "노래", "신체", "사물", "크래비"],
-    'BRONZE': ["음식", "한자성어", "영화", "드라마", "노래", "신체", "사물", "크래비"],
-    'IRON': ["음식", "한자성어", "영화", "드라마", "노래", "사물", "크래비"],
-    'GUEST': ["음식", "한자성어", "영화", "드라마", "노래", "크래비"]
-  };
-
-  let currentUser = null;
-  let currentGrade = 'GUEST';
-
-  function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if (passwords[username] && passwords[username] === password) {
-      for (let grade in users) {
-        if (users[grade].includes(username)) {
-          currentUser = username;
-          currentGrade = grade;
-          break;
-        }
-      }
-      alert(welcomeMessage(currentGrade, username));
-      document.getElementById('loginBox').style.display = 'none';
-      document.getElementById('userInfo').style.display = 'block';
-      document.getElementById('displayName').textContent = currentUser;
-      document.getElementById('displayGrade').textContent = currentGrade;
-    } else {
-      alert('아이디 또는 비밀번호가 틀렸다냥!');
-    }
-  }
-
-  function welcomeMessage(grade, username) {
-    const messages = {
-      'VIP': `우리 귀한 VIP ${username}님!! 어서오라냥!!`,
-      'GOLD': `GOLD ${username}님!! 오셨냥?? 재밌게 즐기다가라냥!!`,
-      'SILVER': `SILVER ${username}! 놀다가라냥~!`,
-      'BRONZE': `에.. BRONZE ${username} 왔냥~ 더 열심히 하라냥~`,
-      'IRON': `하~암! 그래그래~ 열심히 해보라냥~`
-    };
-    return messages[grade] || '어서오라냥~!';
-  }
-
-  function logout() {
-    location.reload();
-  }
-
-  const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
-
-  function normalizeInput(input) {
-    const comboMap = {
-      'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ',
-      'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ',
-      'ㅄ': 'ㅂㅅ'
-    };
-    return [...input].map(c => comboMap[c] || c).join('');
-  }
-
-  function getInitials(word) {
-    let result = '';
-    for (let char of word) {
-      const code = char.charCodeAt(0) - 0xAC00;
-      if (code >= 0 && code <= 11171) {
-        result += CHO[Math.floor(code / 588)];
-      }
-    }
-    return result;
-  }
-
-  function handleKey(event) {
-    if (event.key === 'Enter') search();
-  }
-
-  function search() {
-    const rawInput = document.getElementById('input').value.trim();
-    const input = normalizeInput(rawInput);
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = '';
-
-    const categories = categoryPerGrade[currentGrade] || categoryPerGrade['GUEST'];
-
-    categories.forEach(category => {
-      const words = categoryData[category] || [];
-      const matched = words.filter(word => getInitials(word).startsWith(input));
-      if (matched.length > 0) {
-        const box = document.createElement('div');
-        box.className = 'category-box';
-        box.innerHTML = `<h3>[${category}]</h3><ul>${matched.map(w => `<li>${w}</li>`).join('')}</ul>`;
-        resultDiv.appendChild(box);
-      }
-    });
-  }
-
-  // 🐱 고양이 이미지 튕기며 돌아다니기 + 회전
-  const cat = document.getElementById('cat');
-  let x = 100, y = 100, dx = 2, dy = 2;
-
-  function moveCat() {
-    const maxX = window.innerWidth - cat.clientWidth;
-    const maxY = window.innerHeight - cat.clientHeight;
-    x += dx;
-    y += dy;
-    if (x <= 0 || x >= maxX) dx *= -1;
-    if (y <= 0 || y >= maxY) dy *= -1;
-    cat.style.left = x + 'px';
-    cat.style.top = y + 'px';
-    requestAnimationFrame(moveCat);
-  }
-
-  moveCat();
-</script>
-</body>
-</html>
+ 
+     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+ 
+     function normalizeInput(input) {
+       const comboMap = {
+         'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ',
+         'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ',
+         'ㅄ': 'ㅂㅅ'
+       };
+       const comboMap = { 'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ', 'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ', 'ㅄ': 'ㅂㅅ' };
+       return [...input].map(c => comboMap[c] || c).join('');
+     }
+ 
+ @@ -379,17 +439,57 @@ <h4>💖 DIB를 응원하고 싶냥?</h4>
+       return result;
+     }
+ 
+     let currentUser = null;
+     let currentRole = 'GUEST';
+ 
+     function handleKey(event) {
+       if (event.key === 'Enter') search();
+     }
+ 
+     function login() {
+       const username = document.getElementById('username').value.trim();
+       const password = document.getElementById('password').value.trim();
+ 
+       if (users[username] && users[username] === password) {
+         currentUser = username;
+         for (let role in roles) {
+           if (roles[role].includes(username)) {
+             currentRole = role;
+             break;
+           }
+         }
+ 
+         const messages = {
+           VIP: `우리 귀한 VIP ${username}님!! 어서오라냥!!`,
+           GOLD: `GOLD ${username}님!! 오셨냥?? 재밌게 즐기다가라냥!!`,
+           SILVER: `SILVER ${username}! 놀다가라냥~!`,
+           BRONZE: `에.. BRONZE ${username} 왔냥~ 더 열심히 하라냥~`,
+           IRON: `하~암! 그래그래~ 열심히 해보라냥~`
+         };
+ 
+         alert(messages[currentRole]);
+       } else {
+         alert('아이디 또는 비밀번호가 틀렸다냥~!');
+       }
+     }
+ 
+     function logout() {
+       currentUser = null;
+       currentRole = 'GUEST';
+       alert('로그아웃했다냥~!');
+     }
+ 
+     function search() {
+       const rawInput = document.getElementById('input').value.trim();
+       const input = normalizeInput(rawInput);
+       const resultDiv = document.getElementById('result');
+       resultDiv.innerHTML = '';
+ 
+       const roleTopicList = roleTopics[currentRole];
+ 
+       for (const [category, words] of Object.entries(data)) {
+         if (roleTopicList !== 'all' && !roleTopicList.includes(category)) continue;
+ 
+         const matched = words.filter(word => getInitials(word).startsWith(input));
+         if (matched.length > 0) {
+           const box = document.createElement('div');
+ @@ -400,21 +500,27 @@ <h4>💖 DIB를 응원하고 싶냥?</h4>
+       }
+     }
+ 
+     // 🐱 고양이 움직이기
+     // 🐱 고양이 이미지가 튕기며 돌아다니는 애니메이션
+     const cat = document.getElementById('cat');
+     let x = 100, y = 100, dx = 2, dy = 2;
+     let x = 100, y = 100;
+     let dx = 2, dy = 2;
+ 
+     function moveCat() {
+       const maxX = window.innerWidth - cat.clientWidth;
+       const maxY = window.innerHeight - cat.clientHeight;
+       x += dx; y += dy;
+ 
+       x += dx;
+       y += dy;
+ 
+       if (x <= 0 || x >= maxX) dx *= -1;
+       if (y <= 0 || y >= maxY) dy *= -1;
+ 
+       cat.style.left = x + 'px';
+       cat.style.top = y + 'px';
+       requestAnimationFrame(moveCat);
+     }
+ 
+     moveCat();
+   </script>
+ </body>
+ </html>
+ </html>
