@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DIB 화이팅!!</title>
   <style>
     body {
@@ -10,22 +10,20 @@
       cursor: url('https://cur.cursors-4u.net/nature/nat-11/nat1052.cur'), auto;
       padding-bottom: 120px;
       margin: 0;
-      background: url('배경이미지.png') no-repeat center center;
-      background-size: cover;
-      overflow-x: hidden;
+      background: #fff;
+      overflow: hidden;
     }
 
     h2 {
       font-weight: bold;
       text-align: center;
-      position: relative;
-      z-index: 1;
+      margin-top: 20px;
     }
 
     input, button {
       font-size: 16px;
       padding: 8px;
-      margin: 10px;
+      margin: 5px;
     }
 
     .category-container {
@@ -33,8 +31,6 @@
       flex-wrap: wrap;
       justify-content: center;
       margin-top: 20px;
-      position: relative;
-      z-index: 1;
     }
 
     .category-box {
@@ -42,7 +38,6 @@
       box-sizing: border-box;
       padding: 10px;
       border: 1px solid #ddd;
-      background-color: rgba(255, 255, 255, 0.8);
     }
 
     .category-box h3 {
@@ -68,8 +63,6 @@
     .audio-controls {
       text-align: center;
       margin-top: 30px;
-      position: relative;
-      z-index: 1;
     }
 
     .audio-controls button {
@@ -94,29 +87,7 @@
       z-index: 1000;
     }
 
-    .support-box h4 {
-      color: #ff3399;
-      margin: 0 0 10px 0;
-      font-size: 14px;
-    }
-
-    .support-box p {
-      font-size: 12px;
-      margin: 5px 0;
-    }
-
-    .support-box a {
-      display: inline-block;
-      margin-top: 6px;
-      padding: 6px 10px;
-      background-color: #ff66aa;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
+    /* 🐾 튕기는 고양이 스타일 */
     #cat {
       position: fixed;
       width: 50px;
@@ -130,18 +101,41 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+
+    /* 로그인 박스 */
+    .login-box {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .user-info {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
-  <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
-
-  <div style="text-align:center;">
-    <input type="text" id="username" placeholder="아이디">
-    <input type="password" id="password" placeholder="비밀번호">
+  <div class="login-box" id="loginBox">
+    <h2>로그인 하라냥~!</h2>
+    <input type="text" id="username" placeholder="아이디" onkeydown="if(event.key==='Enter') login()"/>
+    <input type="password" id="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter') login()"/>
     <button onclick="login()">로그인</button>
+  </div>
+
+  <div class="user-info" id="userInfo" style="display:none;">
+    <div>닉네임: <span id="displayName"></span></div>
+    <div>계급: <span id="displayGrade"></span></div>
     <button onclick="logout()">로그아웃</button>
   </div>
 
+  <h2>도저히 문제를 풀 수 없는 찐따들을 위한 친절한 사이트다냥!! 냥냥~</h2>
   <div style="text-align:center;">
     <input type="text" id="input" placeholder="예: ㄱㅇㅈ" onkeydown="handleKey(event)">
     <button onclick="search()">검색</button>
@@ -153,7 +147,6 @@
   <div class="audio-controls">
     <audio id="bgm" loop>
       <source src="bgm.mp3" type="audio/mp3">
-      브라우저가 오디오를 지원하지 않습니다.
     </audio>
     <button onclick="document.getElementById('bgm').play()">재생</button>
     <button onclick="document.getElementById('bgm').pause()">일시정지</button>
@@ -165,42 +158,37 @@
     </div>
   </div>
 
+  <!-- 💖 후원 박스 -->
   <div class="support-box">
     <h4>💖 DIB를 응원하고 싶냥?</h4>
     <p>📬 농협<br><strong>123456-78-91011</strong><br>(이승진)</p>
     <a href="https://toss.me/너의아이디" target="_blank">토스로 후원하기</a>
   </div>
 
-  <img src="cat.png" id="cat" alt="고양이">
+  <!-- 🐱 고양이 이미지 -->
+  <img src="cat.png" id="cat" alt="고양이" />
 
   <script>
-    // 사용자 데이터 (아이디:비밀번호)
     const users = {
-      '엄마99': 'pass1',
-      '얼벌키': 'pass2',
-      'ㄱㄱㄱ': 'pass3',
-      '산삼': 'pass4',
-      '짐볼': 'pass5',
-      '건포도': 'pass6',
-      '퀴즈못해': 'pass7'
+      'VIP': ['엄마99', '고스트에이전시', '동글동글', '산삼', '얼벌키', '음', '정은', '콩콩', '쿠키and크림', '핫초', '홈즈'],
+      'GOLD': ['NUll', 'NUll', 'NUll'],
+      'SILVER': ['NUll', 'NUll', 'NUll'],
+      'BRONZE': ['NUll', 'NUll', 'NUll'],
+      'IRON': ['NUll', 'NUll', 'NUll']
     };
 
-    // 계급별 사용자
-    const roles = {
-      VIP: ['엄마99', '얼벌키', 'ㄱㄱㄱ'],
-      GOLD: ['산삼'],
-      SILVER: ['짐볼'],
-      BRONZE: ['건포도'],
-      IRON: ['퀴즈못해']
-    };
-
-    const roleTopics = {
-      VIP: 'all',
-      GOLD: ['음식', '한자성어', '영화', '병/질환', '상상속의존재', '드라마', '노래', '신체', '사물', '크래비'],
-      SILVER: ['음식', '한자성어', '영화', '병/질환', '드라마', '노래', '신체', '사물', '크래비'],
-      BRONZE: ['음식', '한자성어', '영화', '드라마', '노래', '신체', '사물', '크래비'],
-      IRON: ['음식', '한자성어', '영화', '드라마', '노래', '사물', '크래비'],
-      GUEST: ['음식', '한자성어', '영화', '드라마', '노래']
+    const passwords = {
+      '엄마99': '!!vpdlvj11',
+      '고스트에이전시': 'djfzl43',
+      '동글동글': '1234',
+      '산삼': '1234',
+      '얼벌키': '1234',
+      '음': '1234',
+      '정은': '1234',
+      '콩콩': '1234',
+      '쿠키and크림': '1234',
+      '핫초': '1234',
+      '홈즈': '1234',
     };
 
     const data = {
@@ -419,12 +407,65 @@
  "화장품", "황동", "황수정", "효자손", "휠체어", "휴지", "휴지통", "흑요석", "히터"]
 ,
 "크래비":["크래비바보"]
- };
+};
+
+    const categoryPerGrade = {
+      'VIP': Object.keys(categoryData),
+      'GOLD': ["음식", "한자성어", "영화", "병/질환", "상상속의존재", "드라마", "노래", "신체", "사물", "크래비"],
+      'SILVER': ["음식", "한자성어", "영화", "병/질환", "드라마", "노래", "신체", "사물", "크래비"],
+      'BRONZE': ["음식", "한자성어", "영화", "드라마", "노래", "신체", "사물", "크래비"],
+      'IRON': ["음식", "한자성어", "영화", "드라마", "노래", "사물", "크래비"],
+      'GUEST': ["음식", "한자성어", "영화", "드라마", "노래", "크래비"]
+    };
+
+    let currentUser = null;
+    let currentGrade = 'GUEST';
+
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (passwords[username] && passwords[username] === password) {
+        for (let grade in users) {
+          if (users[grade].includes(username)) {
+            currentUser = username;
+            currentGrade = grade;
+            break;
+          }
+        }
+        alert(welcomeMessage(currentGrade, username));
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('userInfo').style.display = 'block';
+        document.getElementById('displayName').textContent = currentUser;
+        document.getElementById('displayGrade').textContent = currentGrade;
+      } else {
+        alert('아이디 또는 비밀번호가 틀렸다냥!');
+      }
+    }
+
+    function welcomeMessage(grade, username) {
+      const messages = {
+        'VIP': `우리 귀한 VIP ${username}님!! 어서오라냥!!`,
+        'GOLD': `GOLD ${username}님!! 오셨냥?? 재밌게 즐기다가라냥!!`,
+        'SILVER': `SILVER ${username}! 놀다가라냥~!`,
+        'BRONZE': `에.. BRONZE ${username} 왔냥~ 더 열심히 하라냥~`,
+        'IRON': `하~암! 그래그래~ 열심히 해보라냥~`
+      };
+      return messages[grade] || '어서오라냥~!';
+    }
+
+    function logout() {
+      location.reload();
+    }
 
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 
     function normalizeInput(input) {
-      const comboMap = { 'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ', 'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ', 'ㅄ': 'ㅂㅅ' };
+      const comboMap = {
+        'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ',
+        'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ',
+        'ㅄ': 'ㅂㅅ'
+      };
       return [...input].map(c => comboMap[c] || c).join('');
     }
 
@@ -439,44 +480,8 @@
       return result;
     }
 
-    let currentUser = null;
-    let currentRole = 'GUEST';
-
     function handleKey(event) {
       if (event.key === 'Enter') search();
-    }
-
-    function login() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      if (users[username] && users[username] === password) {
-        currentUser = username;
-        for (let role in roles) {
-          if (roles[role].includes(username)) {
-            currentRole = role;
-            break;
-          }
-        }
-
-        const messages = {
-          VIP: `우리 귀한 VIP ${username}님!! 어서오라냥!!`,
-          GOLD: `GOLD ${username}님!! 오셨냥?? 재밌게 즐기다가라냥!!`,
-          SILVER: `SILVER ${username}! 놀다가라냥~!`,
-          BRONZE: `에.. BRONZE ${username} 왔냥~ 더 열심히 하라냥~`,
-          IRON: `하~암! 그래그래~ 열심히 해보라냥~`
-        };
-
-        alert(messages[currentRole]);
-      } else {
-        alert('아이디 또는 비밀번호가 틀렸다냥~!');
-      }
-    }
-
-    function logout() {
-      currentUser = null;
-      currentRole = 'GUEST';
-      alert('로그아웃했다냥~!');
     }
 
     function search() {
@@ -485,11 +490,10 @@
       const resultDiv = document.getElementById('result');
       resultDiv.innerHTML = '';
 
-      const roleTopicList = roleTopics[currentRole];
+      const categories = categoryPerGrade[currentGrade] || categoryPerGrade['GUEST'];
 
-      for (const [category, words] of Object.entries(data)) {
-        if (roleTopicList !== 'all' && !roleTopicList.includes(category)) continue;
-
+      categories.forEach(category => {
+        const words = categoryData[category] || [];
         const matched = words.filter(word => getInitials(word).startsWith(input));
         if (matched.length > 0) {
           const box = document.createElement('div');
@@ -497,24 +501,20 @@
           box.innerHTML = `<h3>[${category}]</h3><ul>${matched.map(w => `<li>${w}</li>`).join('')}</ul>`;
           resultDiv.appendChild(box);
         }
-      }
+      });
     }
 
-    // 🐱 고양이 이미지가 튕기며 돌아다니는 애니메이션
+    // 🐱 고양이 튕기기
     const cat = document.getElementById('cat');
-    let x = 100, y = 100;
-    let dx = 2, dy = 2;
+    let x = 100, y = 100, dx = 2, dy = 2;
 
     function moveCat() {
       const maxX = window.innerWidth - cat.clientWidth;
       const maxY = window.innerHeight - cat.clientHeight;
-
       x += dx;
       y += dy;
-
       if (x <= 0 || x >= maxX) dx *= -1;
       if (y <= 0 || y >= maxY) dy *= -1;
-
       cat.style.left = x + 'px';
       cat.style.top = y + 'px';
       requestAnimationFrame(moveCat);
